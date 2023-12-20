@@ -134,7 +134,7 @@ contract CORE is VRFConsumerBaseV2, Ownable {
     }
 
     function no_more_bets(uint256 amount, address user) internal {
-        require(amount <= DEPOSITS[msg.sender], "Insufficient user funds;");
+        require(amount <= DEPOSITS[user], "Insufficient user funds;");
         TOTAL -= amount;
         DEPOSITS[user] -= amount;
     }
