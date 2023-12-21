@@ -15,3 +15,7 @@ remixd -s . --remix-ide https://remix.ethereum.org
 - `validate` Check amount limit
 - `payout` Bet payout
 - `no_more_bets` Amount is init by the contract
+
+## Clients
+
+- Baccarat

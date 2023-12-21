@@ -37,37 +37,34 @@ contract testSuite {
      * - Banker bets amount
      * - Tie bets amount
     */
-    function test_single() public {
+    function test_play_single() public {
         uint256 amount = 5000 ether;
 
         BACCARATTEST.deposit(amount);
         BACCARAT.BET[] memory bets;
         bets = new BACCARAT.BET[](1);
 
-
+        // Player
         bets[0].hand = BACCARAT.HANDS.PLAYER;
 
         bets[0].wager = 25 ether;
         BACCARATTEST.play(bets);
-
         bets[0].wager = 5000 ether;
         BACCARATTEST.play(bets);
 
-
+        // Banker
         bets[0].hand = BACCARAT.HANDS.BANKER;
 
         bets[0].wager = 25 ether;
         BACCARATTEST.play(bets);
-
         bets[0].wager = 5000 ether;
         BACCARATTEST.play(bets);
 
-
+        // Tie
         bets[0].hand = BACCARAT.HANDS.TIE;
 
         bets[0].wager = 10 ether;
         BACCARATTEST.play(bets);
-
         bets[0].wager = 100 ether;
         BACCARATTEST.play(bets);
 
@@ -81,27 +78,25 @@ contract testSuite {
      * - Player and Tie
      * - Banker and Tie
     */
-    function test_multiple() public {
+    function test_play_multiple() public {
         uint256 amount = 5000 ether;
 
         BACCARATTEST.deposit(amount);
         BACCARAT.BET[] memory bets;
         bets = new BACCARAT.BET[](2);
 
-
+        // Player and Tie
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 100 ether;
         bets[1].hand = BACCARAT.HANDS.TIE;
         bets[1].wager = 100 ether;
-
         BACCARATTEST.play(bets);
 
-
+        // Banker and Tie
         bets[0].hand = BACCARAT.HANDS.BANKER;
         bets[0].wager = 100 ether;
         bets[1].hand = BACCARAT.HANDS.TIE;
         bets[1].wager = 100 ether;
-
         BACCARATTEST.play(bets);
 
 
@@ -115,16 +110,17 @@ contract testSuite {
      * - Banker Limit
      * - Tie Limit
      * - Zero bets
+     * - Extra bets
+     * - Extra amount
      */
-    function test_bug() public {
+    function test_play_bug() public {
         uint256 amount = 5000 ether;
 
         BACCARATTEST.deposit(amount);
         BACCARAT.BET[] memory bets;
-
-
         bets = new BACCARAT.BET[](1);
 
+        // Player Limit
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 24 ether;
         play_bug(bets);
@@ -133,7 +129,7 @@ contract testSuite {
         bets[0].wager = 5001 ether;
         play_bug(bets);
 
-
+        // Banker Limit
         bets[0].hand = BACCARAT.HANDS.BANKER;
         bets[0].wager = 24 ether;
         play_bug(bets);
@@ -142,7 +138,7 @@ contract testSuite {
         bets[0].wager = 5001 ether;
         play_bug(bets);
 
-
+        // Tie Limit
         bets[0].hand = BACCARAT.HANDS.TIE;
         bets[0].wager = 9 ether;
         play_bug(bets);
@@ -151,13 +147,13 @@ contract testSuite {
         bets[0].wager = 101 ether;
         play_bug(bets);
 
-
+        // Zero bets
         bets = new BACCARAT.BET[](0);
         play_bug(bets);
 
-
+        // Extra bets
         bets = new BACCARAT.BET[](3);
-        
+
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 100 ether;
         bets[1].hand = BACCARAT.HANDS.BANKER;
@@ -166,11 +162,12 @@ contract testSuite {
         bets[2].wager = 100 ether;
         play_bug(bets);
 
-
+        // Extra amount
         bets = new BACCARAT.BET[](2);
 
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 5000 ether;
+
         bets[1].hand = BACCARAT.HANDS.TIE;
         bets[1].wager = 100 ether;
         play_bug(bets);
@@ -188,7 +185,10 @@ contract testSuite {
         }
     }
 
-    function test_player() public {
+    /*
+     * Player process
+     */
+    function test_process_player() public {
         BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
 
@@ -219,7 +219,10 @@ contract testSuite {
         test_bets(100 ether, bets, rand_word, 100 ether, 0);
     }
 
-    function test_banker() public {
+    /*
+     * Banker process
+     */
+    function test_process_banker() public {
         BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
 
@@ -299,7 +302,10 @@ contract testSuite {
         test_bets(100 ether, bets, rand_word, 100 ether, 95 ether);
     }
 
-    function test_tie() public {
+    /*
+     * Tie process
+     */
+    function test_process_tie() public {
         BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
 
@@ -331,7 +337,10 @@ contract testSuite {
 
     }
 
-    function test_push() public {
+    /*
+     * PUSH bet process
+     */
+    function test_process_push() public {
         // Player PUSH 50-50 ether withdraw
         BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
@@ -359,7 +368,10 @@ contract testSuite {
         test_bets(100 ether, bets, rand_word, 50 ether, 50 ether);
     }
 
-    function test_multibet() public {
+    /*
+     * Multiple process
+     */
+    function test_process_multiple() public {
         // Player PUSH 50-50 ether withdraw
         BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
