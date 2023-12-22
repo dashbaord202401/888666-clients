@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.0;
 
 import "remix_tests.sol"; 
 import "https://github.com/chain-xz/chain-xz/blob/main/token.sol";
