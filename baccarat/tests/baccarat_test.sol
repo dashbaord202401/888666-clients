@@ -32,143 +32,90 @@ contract testSuite {
     }
 
     /*
-     * Test single bets
-     * - Player bets amount
-     * - Banker bets amount
-     * - Tie bets amount
+     * Test play amount
+     * - Player amount
+     * - Banker amount
+     * - Tie amount
     */
-    function test_play_single() public {
-        uint256 amount = 5000 ether;
-
+    function test_play() public {
+        uint256 amount = 5025 ether;
         BACCARATTEST.deposit(amount);
         BACCARAT.BET[] memory bets;
-        bets = new BACCARAT.BET[](1);
 
-        // Player
-        bets[0].hand = BACCARAT.HANDS.PLAYER;
-
-        bets[0].wager = 25 ether;
-        BACCARATTEST.play(bets);
-        bets[0].wager = 5000 ether;
-        BACCARATTEST.play(bets);
-
-        // Banker
-        bets[0].hand = BACCARAT.HANDS.BANKER;
-
-        bets[0].wager = 25 ether;
-        BACCARATTEST.play(bets);
-        bets[0].wager = 5000 ether;
-        BACCARATTEST.play(bets);
-
-        // Tie
-        bets[0].hand = BACCARAT.HANDS.TIE;
-
-        bets[0].wager = 10 ether;
-        BACCARATTEST.play(bets);
-        bets[0].wager = 100 ether;
-        BACCARATTEST.play(bets);
-
-
-        check_deposit(amount, amount);
-        BACCARATTEST.withdraw(amount);
-    }
-
-    /*
-     * Test multiple bets
-     * - Player and Tie
-     * - Banker and Tie
-    */
-    function test_play_multiple() public {
-        uint256 amount = 5000 ether;
-
-        BACCARATTEST.deposit(amount);
-        BACCARAT.BET[] memory bets;
         bets = new BACCARAT.BET[](2);
 
-        // Player and Tie
+        // Player bet amount
         bets[0].hand = BACCARAT.HANDS.PLAYER;
-        bets[0].wager = 100 ether;
-        bets[1].hand = BACCARAT.HANDS.TIE;
-        bets[1].wager = 100 ether;
+        bets[1].hand = BACCARAT.HANDS.PLAYER;
+
+        bets[0].wager = 25 ether;
+        bets[1].wager = 5000 ether;
+
         BACCARATTEST.play(bets);
 
-        // Banker and Tie
+
+        // Banker bet amount
         bets[0].hand = BACCARAT.HANDS.BANKER;
-        bets[0].wager = 100 ether;
-        bets[1].hand = BACCARAT.HANDS.TIE;
-        bets[1].wager = 100 ether;
+        bets[1].hand = BACCARAT.HANDS.BANKER;
+
+        bets[0].wager = 25 ether;
+        bets[1].wager = 5000 ether;
+
         BACCARATTEST.play(bets);
 
 
+        // Tie bet amount
+        bets[0].hand = BACCARAT.HANDS.TIE;
+        bets[1].hand = BACCARAT.HANDS.TIE;
+
+        bets[0].wager = 10 ether;
+        bets[1].wager = 100 ether;
+
+        BACCARATTEST.play(bets);
+
+
+        // Withdraw deposit amount
         check_deposit(amount, amount);
         BACCARATTEST.withdraw(amount);
     }
 
     /*
-     * Test buggy bets
-     * - Player Limit
-     * - Banker Limit
-     * - Tie Limit
+     * Test play bad bet
      * - Zero bets
      * - Extra bets
      * - Extra amount
      */
-    function test_play_bug() public {
+    function test_bug() public {
         uint256 amount = 5000 ether;
-
         BACCARATTEST.deposit(amount);
         BACCARAT.BET[] memory bets;
-        bets = new BACCARAT.BET[](1);
 
-        // Player Limit
-        bets[0].hand = BACCARAT.HANDS.PLAYER;
-        bets[0].wager = 24 ether;
-        play_bug(bets);
-
-        bets[0].hand = BACCARAT.HANDS.PLAYER;
-        bets[0].wager = 5001 ether;
-        play_bug(bets);
-
-        // Banker Limit
-        bets[0].hand = BACCARAT.HANDS.BANKER;
-        bets[0].wager = 24 ether;
-        play_bug(bets);
-
-        bets[0].hand = BACCARAT.HANDS.BANKER;
-        bets[0].wager = 5001 ether;
-        play_bug(bets);
-
-        // Tie Limit
-        bets[0].hand = BACCARAT.HANDS.TIE;
-        bets[0].wager = 9 ether;
-        play_bug(bets);
-
-        bets[0].hand = BACCARAT.HANDS.TIE;
-        bets[0].wager = 101 ether;
-        play_bug(bets);
 
         // Zero bets
         bets = new BACCARAT.BET[](0);
         play_bug(bets);
 
+
         // Extra bets
         bets = new BACCARAT.BET[](3);
 
         bets[0].hand = BACCARAT.HANDS.PLAYER;
-        bets[0].wager = 100 ether;
         bets[1].hand = BACCARAT.HANDS.BANKER;
-        bets[1].wager = 100 ether;
         bets[2].hand = BACCARAT.HANDS.TIE;
+
+        bets[0].wager = 1000 ether;
+        bets[1].wager = 1000 ether;
         bets[2].wager = 100 ether;
         play_bug(bets);
+
 
         // Extra amount
         bets = new BACCARAT.BET[](2);
 
         bets[0].hand = BACCARAT.HANDS.PLAYER;
-        bets[0].wager = 5000 ether;
-
         bets[1].hand = BACCARAT.HANDS.TIE;
+
+        bets[0].wager = 5000 ether;
         bets[1].wager = 100 ether;
         play_bug(bets);
 
@@ -177,6 +124,9 @@ contract testSuite {
         BACCARATTEST.withdraw(amount);
     }
 
+    /*
+     * Process bad bet
+     */
     function play_bug(BACCARAT.BET[] memory bets) private {
         try BACCARATTEST.play(bets) {
             Assert.ok(false, "Bad bets accepted;");
@@ -189,12 +139,12 @@ contract testSuite {
      * Player process
      */
     function test_process_player() public {
-        BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
+        BACCARAT.BET[] memory bets = new BACCARAT.BET[](1);
 
-        bets = new BACCARAT.BET[](1);
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 100 ether;
+
 
         /*
          * Player 9 0
@@ -202,6 +152,7 @@ contract testSuite {
          */
         rand_word = [uint256(9), 0, 0, 8, 0, 0];
         test_bets(100 ether, bets, rand_word, 100 ether, 100 ether);
+
 
         /*
          * Player 2 3 4
@@ -213,11 +164,12 @@ contract testSuite {
         /*
          * Player 2 3
          * Banker 8 0
-         * banker natural win
+         * Banker Natural
          */
         rand_word = [uint256(2), 3, 4, 8, 0, 0];
         test_bets(100 ether, bets, rand_word, 100 ether, 0);
     }
+
 
     /*
      * Banker process
@@ -229,6 +181,7 @@ contract testSuite {
         bets = new BACCARAT.BET[](1);
         bets[0].hand = BACCARAT.HANDS.BANKER;
         bets[0].wager = 100 ether;
+
 
         /*
          * Player 8 0
@@ -248,7 +201,7 @@ contract testSuite {
         /*
          * Player 8 0
          * Banker 2 3
-         * player natural win
+         * Player Natural
          */
         rand_word = [uint256(8), 0, 0, 2, 3, 4];
         test_bets(100 ether, bets, rand_word, 100 ether, 0);
@@ -313,6 +266,7 @@ contract testSuite {
         bets[0].hand = BACCARAT.HANDS.TIE;
         bets[0].wager = 100 ether;
 
+
         /*
          * Player 9 0
          * Banker 9 0
@@ -334,7 +288,6 @@ contract testSuite {
          */
         rand_word = [uint256(8), 3, 0, 1, 0, 0];
         test_bets(100 ether, bets, rand_word, 100 ether, 800 ether);
-
     }
 
     /*
@@ -348,6 +301,7 @@ contract testSuite {
         bets = new BACCARAT.BET[](1);
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 100 ether;
+
 
         /*
          * Player 4 0 5
@@ -370,13 +324,14 @@ contract testSuite {
 
     /*
      * Multiple process
+     * - Player PUSH 50-50 ether withdraw
      */
     function test_process_multiple() public {
-        // Player PUSH 50-50 ether withdraw
         BACCARAT.BET[] memory bets;
         uint256[6] memory rand_word;
 
         bets = new BACCARAT.BET[](2);
+
 
         bets[0].hand = BACCARAT.HANDS.PLAYER;
         bets[0].wager = 100 ether;
@@ -397,6 +352,7 @@ contract testSuite {
          */
         rand_word = [uint256(8), 0, 0, 6, 0, 0];
         test_bets(200 ether, bets, rand_word, 100 ether, 100 ether);
+
 
         bets[0].hand = BACCARAT.HANDS.BANKER;
         bets[0].wager = 100 ether;
@@ -420,9 +376,9 @@ contract testSuite {
     }
 
     /*
-     * deposit  amount needed to perform tx
+     * deposit  amount for bet
      * bets     bets
-     * words    random words for bets
+     * words    random word for bet
      * wager    win bet wager amount
      * payout   win bet payout amount
      */
@@ -435,6 +391,7 @@ contract testSuite {
         for (uint i = 0; i < rand_word.length; i++) {
             rand_word[i] = words[i];
         }
+
         COORDINATOR.fulfillRandomWordsWithOverride(request, address(BACCARATTEST), rand_word);
 
         if (payout != 0) {

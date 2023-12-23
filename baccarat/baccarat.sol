@@ -44,9 +44,9 @@ contract BACCARAT is CORE {
         for (uint256 i = 0; i < bets.length; i++) {
             uint256 idx = uint256(bets[i].hand);
 
-            amount += bets[i].wager;
             validate(bets[i].wager, TABLEMIN[idx], TABLEMAX[idx]);
             REQUESTS[request].bets.push(bets[i]);
+            amount += bets[i].wager;
         }
 
         REQUESTS[request].amount = amount;
@@ -120,7 +120,7 @@ contract BACCARAT is CORE {
             }
         }
 
-        // Bet Payout
+        // Payout
         for (uint256 i = 0; i < bets.length; i++) {
             if(player_coup > banker_coup && bets[i].hand == HANDS.PLAYER) {
                 payout(bets[i].wager, user, 1, 1);
@@ -132,7 +132,7 @@ contract BACCARAT is CORE {
                 payout(bets[i].wager, user, 8, 1);
             }
 
-            // TIE player and banker push
+            // TIE player & banker push
             if(player_coup == banker_coup && bets[i].hand != HANDS.TIE) {
                 payout(bets[i].wager, user, 0, 1);
             }
