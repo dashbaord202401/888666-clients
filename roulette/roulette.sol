@@ -52,9 +52,9 @@ contract ROULETTE is CORE {
         for (uint256 i = 0; i < bets.length; i++) {
             uint16 idx = uint16(bets[i].bet);
 
-            amount += bets[i].wager;
             validate(bets[i].wager, TABLEMIN[idx], TABLEMAX[idx]);
             REQUESTS[request].bets.push(bets[i]);
+            amount += bets[i].wager;
 
             require(NUMBER[idx] == bets[i].number.length, "Invalid bet length;");
         }
