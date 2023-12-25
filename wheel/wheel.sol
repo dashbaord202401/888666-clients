@@ -49,9 +49,9 @@ contract WHEEL is CORE {
         request = request_words(NUMWORDS);
 
         for (uint i = 0; i < bets.length; i++) {
-            amount += bets[i].wager;
             validate(bets[i].wager, TABLEMIN, TABLEMAX);
             REQUESTS[request].bets.push(bets[i]);
+            amount += bets[i].wager;
         }
 
         REQUESTS[request].amount = amount;

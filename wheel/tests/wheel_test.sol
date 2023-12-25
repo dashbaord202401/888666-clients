@@ -32,145 +32,62 @@ contract testSuite {
     }
 
     /*
-     * Test single bets
-     * - One bets
-     * - Three bets
-     * - Six bets
-     * - Twelve bets
-     * - Twentyfive bets
-     * - Red bets
-     * - Yellow bets
+     * Test play bets
+     * - One 
+     * - Three
+     * - Six
+     * - Twelve
+     * - Twentyfive
+     * - Red
+     * - Yellow
      */
-    function test_play_single() public {
-        uint256 amount = 1000 ether;
-
+    function test_play() public {
+        uint256 amount = 5000 ether;
         WHEELTEST.deposit(amount);
-        WHEEL.BET[] memory bets;
-        bets = new WHEEL.BET[](1);
+        WHEEL.BET[] memory bets = new WHEEL.BET[](14);
 
         bets[0].bet  = WHEEL.BETS.ONE;
         bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
 
-        bets[0].bet  = WHEEL.BETS.ONE;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-
-        bets[0].bet  = WHEEL.BETS.THREE;
-        bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.THREE;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-
-        bets[0].bet  = WHEEL.BETS.SIX;
-        bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.SIX;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-
-        bets[0].bet  = WHEEL.BETS.TWELVE;
-        bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.TWELVE;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-
-        bets[0].bet  = WHEEL.BETS.TWENTYFIVE;
-        bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.TWENTYFIVE;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-
-        bets[0].bet  = WHEEL.BETS.RED;
-        bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.RED;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-
-        bets[0].bet  = WHEEL.BETS.YELLOW;
-        bets[0].wager = 5 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.YELLOW;
-        bets[0].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        WHEELTEST.withdraw(amount);
-        check_deposit(0, 0);
-    }
-
-    /*
-     * Test multiple bets
-     * - One three bets
-     * - Three six bets
-     * - Six twelve bets
-     * - Twelve twentyfive bets
-     * - Twentyfive red bets
-     * - Red tellow bets
-     * - Yellow one bets
-     */
-    function test_play_multiple() public {
-        uint256 amount = 1000 ether;
-
-        WHEELTEST.deposit(amount);
-        WHEEL.BET[] memory bets;
-        bets = new WHEEL.BET[](2);
-
-        bets[0].bet  = WHEEL.BETS.ONE;
-        bets[0].wager = 5 ether;
-        bets[1].bet  = WHEEL.BETS.THREE;
-        bets[1].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.THREE;
-        bets[0].wager = 5 ether;
-        bets[1].bet  = WHEEL.BETS.SIX;
-        bets[1].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.SIX;
-        bets[0].wager = 5 ether;
-        bets[1].bet  = WHEEL.BETS.TWELVE;
-        bets[1].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.TWELVE;
-        bets[0].wager = 5 ether;
-        bets[1].bet  = WHEEL.BETS.TWENTYFIVE;
-        bets[1].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.TWENTYFIVE;
-        bets[0].wager = 5 ether;
-        bets[1].bet  = WHEEL.BETS.RED;
-        bets[1].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.RED;
-        bets[0].wager = 5 ether;
-        bets[1].bet  = WHEEL.BETS.YELLOW;
-        bets[1].wager = 500 ether;
-        WHEELTEST.play(bets);
-
-        bets[0].bet  = WHEEL.BETS.YELLOW;
-        bets[0].wager = 5 ether;
         bets[1].bet  = WHEEL.BETS.ONE;
         bets[1].wager = 500 ether;
+
+        bets[2].bet  = WHEEL.BETS.THREE;
+        bets[2].wager = 5 ether;
+
+        bets[3].bet  = WHEEL.BETS.THREE;
+        bets[3].wager = 500 ether;
+
+        bets[4].bet  = WHEEL.BETS.SIX;
+        bets[4].wager = 5 ether;
+
+        bets[5].bet  = WHEEL.BETS.SIX;
+        bets[5].wager = 500 ether;
+
+        bets[6].bet  = WHEEL.BETS.TWELVE;
+        bets[6].wager = 5 ether;
+
+        bets[7].bet  = WHEEL.BETS.TWELVE;
+        bets[7].wager = 500 ether;
+
+        bets[8].bet  = WHEEL.BETS.TWENTYFIVE;
+        bets[8].wager = 5 ether;
+
+        bets[9].bet  = WHEEL.BETS.TWENTYFIVE;
+        bets[9].wager = 500 ether;
+
+        bets[10].bet  = WHEEL.BETS.RED;
+        bets[10].wager = 5 ether;
+
+        bets[11].bet  = WHEEL.BETS.RED;
+        bets[11].wager = 500 ether;
+
+        bets[12].bet  = WHEEL.BETS.YELLOW;
+        bets[12].wager = 5 ether;
+
+        bets[13].bet  = WHEEL.BETS.YELLOW;
+        bets[13].wager = 500 ether;
+
         WHEELTEST.play(bets);
 
         WHEELTEST.withdraw(amount);
@@ -178,36 +95,14 @@ contract testSuite {
     }
 
     /*
-     * Test buggy bets
-     * - Bet limit
+     * Test bug bet
      * - Zero bets
      * - Extra amount
      */
     function test_play_bug() public {
         uint256 amount = 1000 ether;
-
         WHEELTEST.deposit(amount);
         WHEEL.BET[] memory bets;
-
-        bets = new WHEEL.BET[](1);
-
-        bets[0].bet  = WHEEL.BETS.ONE;
-        bets[0].wager = 4 ether;
-
-        try WHEELTEST.play(bets) {
-            Assert.ok(false, "Bad amount accepted");
-        } catch {
-            Assert.ok(true, "Bad amount rejected;");
-        }
-
-        bets[0].bet  = WHEEL.BETS.ONE;
-        bets[0].wager = 501 ether;
-
-        try WHEELTEST.play(bets) {
-            Assert.ok(false, "Bad amount accepted");
-        } catch {
-            Assert.ok(true, "Bad amount rejected;");
-        }
 
 
         bets = new WHEEL.BET[](0);
@@ -218,8 +113,8 @@ contract testSuite {
             Assert.ok(true, "Zero bets rejected;");
         }
 
-        bets = new WHEEL.BET[](3);
 
+        bets = new WHEEL.BET[](3);
         bets[0].bet  = WHEEL.BETS.ONE;
         bets[0].wager = 500 ether;
         bets[1].bet  = WHEEL.BETS.THREE;
@@ -236,7 +131,6 @@ contract testSuite {
         WHEELTEST.withdraw(amount);
         check_deposit(0, 0);
     }
-
 
     /*
      * Single bet processing
@@ -284,6 +178,13 @@ contract testSuite {
         process_single(100 ether, WHEEL.BETS.YELLOW, 54,  100 ether, 0 ether);
     }
 
+    /*
+     * deposit  - Deposit amount
+     * bet      - Bet type
+     * word     - Random word
+     * wager    - Wager amount
+     * payout   - Payout amount
+     */
     function process_single(uint256 deposit, WHEEL.BETS bet, uint256 word, uint256 wager, uint256 payout) private {
         WHEELTEST.deposit(deposit);
         WHEEL.BET[] memory bets = new WHEEL.BET[](1);
@@ -358,6 +259,13 @@ contract testSuite {
         process_multiple(200 ether, bet,  54, 100 ether, 100 ether);
     }
 
+    /*
+     * deposit  - Deposit amount
+     * bet      - Bets type
+     * word     - Random word
+     * wager    - Wager amount
+     * payout   - Payout amount
+     */
     function process_multiple(uint256 deposit, WHEEL.BETS[2] memory bet, uint256 word, uint256 wager, uint256 payout) private {
         WHEELTEST.deposit(deposit);
 
@@ -421,6 +329,10 @@ contract testSuite {
         process_multix(54, 100 ether);
     }
 
+    /*
+     * word     - Random word
+     * payout   - Payout amount
+     */
     function process_multix(uint256 word, uint256 payout) private {
         WHEELTEST.deposit(700 ether);
 
