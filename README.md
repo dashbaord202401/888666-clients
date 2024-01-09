@@ -14,6 +14,8 @@ XZ Token clients
 
 ## Clients
 
+- Baccarat
+
 ## Devlopment
 
 remixd -s . --remix-ide https://remix.ethereum.org
