@@ -16,6 +16,7 @@ XZ Token clients
 
 - Baccarat
 - Roulette
+- Big Wheel
 
 ## Devlopment
 
