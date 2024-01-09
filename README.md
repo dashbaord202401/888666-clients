@@ -15,6 +15,7 @@ XZ Token clients
 ## Clients
 
 - Baccarat
+- Roulette
 
 ## Devlopment
 
