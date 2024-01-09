@@ -2,10 +2,6 @@
 
 XZ Token clients
 
-## Devlopment
-
-remixd -s . --remix-ide https://remix.ethereum.org
-
 ## core
 
 - `maintain_fund` Call for mint or burn
@@ -18,6 +14,6 @@ remixd -s . --remix-ide https://remix.ethereum.org
 
 ## Clients
 
-- Baccarat
-- Roulette
-- wheel
+## Devlopment
+
+remixd -s . --remix-ide https://remix.ethereum.org
