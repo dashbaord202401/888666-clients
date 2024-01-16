@@ -1,5 +1,7 @@
 # slot
 
+[Source](<https://www.greo.ca/Modules/EvidenceCentre/files/Christensen%20et%20al(2005)Informing%20clients%20how%20slot.pdf>)
+
 ## Local setup
 
 - Deploy [vrfcoordinatorv2mock](https://docs.chain.link/vrf/v2/subscription/examples/test-locally)
@@ -34,27 +36,8 @@ Symbol      Reel_1  Reel_2  Reel_3
 Total           64      64      64
 ```
 
-## Source
-
-- [data](<https://www.greo.ca/Modules/EvidenceCentre/files/Christensen%20et%20al(2005)Informing%20clients%20how%20slot.pdf>)
-
-## Bets
-
-```txt
-ONE
-THREE
-SIX
-TWELVE
-TWENTYFIVE
-RED
-YELLOW
-```
-
 ## Play
 
 ```txt
-[0, 10000000000000000000]
-[1, 10000000000000000000]
-
-[[0, 10000000000000000000], [1, 10000000000000000000]]
+[10000000000000000000]
 ```
