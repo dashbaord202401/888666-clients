@@ -5,15 +5,18 @@ import "https://github.com/chain-xz/clients/blob/main/core/core.sol";
 
 contract SLOT is CORE {
 
+    struct BET {
+        uint256     wager;
+    }
+
     struct REQUEST {
-        uint256[]   bets;
+        BET[]       bets;
         uint256     amount;
         address     user;
         uint256[]   words;
         bool        exists;
         bool        fulfilled;
     }
-
     mapping(uint256 => REQUEST) public REQUESTS;
 
     uint32 NUMWORDS;
@@ -26,27 +29,25 @@ contract SLOT is CORE {
         TABLEMAX = 10 ether;
     }
 
-    function play(uint256[] memory bets) public returns (uint256 request) {
+    function play(BET[] memory bets) public returns (uint256 request) {
         uint256 amount;
-
-        // Every bet needs 3 words
-        require(bets.length > 0, "Minimum 1 bet;");
         NUMWORDS = uint32(bets.length) * 3;
 
         request = request_words(NUMWORDS);
 
         for (uint i = 0; i < bets.length; i++) {
-            validate(bets[i], TABLEMIN, TABLEMAX);
-            amount += bets[i];
+            validate(bets[i].wager, TABLEMIN, TABLEMAX);
+            REQUESTS[request].bets.push(bets[i]);
+            amount += bets[i].wager;
         }
 
-        REQUESTS[request].bets = bets;
         REQUESTS[request].amount = amount;
         REQUESTS[request].user = msg.sender;
         REQUESTS[request].words = new uint256[](0);
         REQUESTS[request].exists = true;
         REQUESTS[request].fulfilled = false;
 
+        require(bets.length > 0, "Minimum 1 bet;");
         require(amount <= DEPOSITS[msg.sender], "Insufficient user funds;");
         return request;
     }
@@ -58,7 +59,7 @@ contract SLOT is CORE {
         REQUESTS[request].fulfilled = true;
         REQUESTS[request].words = words;
 
-        uint256[] memory bets = REQUESTS[request].bets;
+        BET[] memory bets = REQUESTS[request].bets;
         uint256 amount = REQUESTS[request].amount;
         address user = REQUESTS[request].user;
 
@@ -79,46 +80,45 @@ contract SLOT is CORE {
                                      0, 0, 6, 0, 0, 5, 0, 0, 0, 0, 5, 3, 0, 0, 6, 6,
                                      0, 2, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 4];
 
-        uint256 idx = 0;
-
+        uint256 idx;
         for (uint256 i = 0; i < bets.length; i++) {
 
             uint256 slot_1 = words[idx + 0] % 64;
             uint256 slot_2 = words[idx + 1] % 64;
             uint256 slot_3 = words[idx + 2] % 64;
+            idx += 3;
+
 
             if(reel_1[slot_1] == 1 && reel_2[slot_2] == 1 && reel_3[slot_3] == 1) {
-                payout(bets[i], user, 5000, 1);
+                payout(bets[i].wager, user, 5000, 1);
             }
             else if(reel_1[slot_1] == 2 && reel_2[slot_2] == 2 && reel_3[slot_3] == 2) {
-                payout(bets[i], user, 1000, 1);
+                payout(bets[i].wager, user, 1000, 1);
             }
             else if(reel_1[slot_1] == 3 && reel_2[slot_2] == 3 && reel_3[slot_3] == 3) {
-                payout(bets[i], user, 200, 1);
+                payout(bets[i].wager, user, 200, 1);
             }
             else if(reel_1[slot_1] == 4 && reel_2[slot_2] == 4 && reel_3[slot_3] == 4) {
-                payout(bets[i], user, 100, 1);
+                payout(bets[i].wager, user, 100, 1);
             }
             else if(reel_1[slot_1] == 5 && reel_2[slot_2] == 5 && reel_3[slot_3] == 5) {
-                payout(bets[i], user, 50, 1);
+                payout(bets[i].wager, user, 50, 1);
             }
             else if(reel_1[slot_1] == 6 && reel_2[slot_2] == 6 && reel_3[slot_3] == 6) {
-                payout(bets[i], user, 25, 1);
+                payout(bets[i].wager, user, 25, 1);
             }
             else if (((reel_1[slot_1] == 2) && (reel_2[slot_2] == 2)) ||
                      ((reel_1[slot_1] == 2) && (reel_3[slot_3] == 2)) ||
                      ((reel_2[slot_2] == 2) && (reel_3[slot_3] == 2))) {
-                payout(bets[i], user, 10, 1);
+                payout(bets[i].wager, user, 10, 1);
             }
             else if ((reel_1[slot_1] == 2) || (reel_2[slot_2] == 2) || (reel_3[slot_3] == 2)) {
-                payout(bets[i], user, 2, 1);
+                payout(bets[i].wager, user, 2, 1);
             }
-
-            idx += 3;
         }
     }
 
-    function view_request(uint256 request) public view returns (uint256[] memory, uint256, address, uint256[] memory, bool, bool) {
+    function view_request(uint256 request) public view returns (BET[] memory, uint256, address, uint256[] memory, bool, bool) {
         require(REQUESTS[request].exists, "Request does not exist;");
         return (REQUESTS[request].bets, REQUESTS[request].amount, REQUESTS[request].user, REQUESTS[request].words, REQUESTS[request].exists, REQUESTS[request].fulfilled);
     }

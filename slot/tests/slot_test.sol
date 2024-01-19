@@ -39,19 +39,19 @@ contract testSuite {
     function test_play() public {
         uint256 amount = 30 ether;
         SLOTTEST.deposit(amount);
-        uint256[] memory bets;
+        SLOT.BET[] memory bets;
 
         // Single bet
-        bets = new uint256[](1);
-        bets[0] = 10 ether;
+        bets = new SLOT.BET[](1);
+        bets[0].wager = 10 ether;
 
         SLOTTEST.play(bets);
 
         // Multiple bets
-        bets = new uint256[](3);
-        bets[0] = 10 ether;
-        bets[1] = 10 ether;
-        bets[2] = 10 ether;
+        bets = new SLOT.BET[](3);
+        bets[0].wager = 10 ether;
+        bets[1].wager = 10 ether;
+        bets[2].wager = 10 ether;
 
         SLOTTEST.play(bets);
 
@@ -68,16 +68,16 @@ contract testSuite {
     function test_bug() public {
         uint256 amount = 10 ether;
         SLOTTEST.deposit(amount);
-        uint256[] memory bets;
+        SLOT.BET[] memory bets;
 
         // Zero bets
-        bets = new uint256[](0);
+        bets = new SLOT.BET[](0);
         play_bug(bets);
 
         // Extra amount
-        bets = new uint256[](2);
-        bets[0] = 10 ether;
-        bets[1] = 10 ether;
+        bets = new SLOT.BET[](2);
+        bets[0].wager = 10 ether;
+        bets[1].wager = 10 ether;
         play_bug(bets);
 
         // Withdraw deposit amount
@@ -88,14 +88,13 @@ contract testSuite {
     /*
      * Process bad bet
      */
-    function play_bug(uint256[] memory bets) private {
+    function play_bug(SLOT.BET[] memory bets) private {
         try SLOTTEST.play(bets) {
             Assert.ok(false, "Bad bets accepted;");
         } catch {
             Assert.ok(true, "Bad bets rejected;");
         }
     }
-
 
     /*
      * Test single bet win
@@ -115,83 +114,83 @@ contract testSuite {
         words[0] = 13;
         words[1] = 1;
         words[2] = 30;
-        process_single_bet(10 ether, words, 10 ether, 50000 ether);
+        process_single_bet(words, 10 ether, 50000 ether);
 
         // 3 Cherry
         words[0] = 6;
         words[1] = 5;
         words[2] = 20;
-        process_single_bet(10 ether, words, 10 ether, 10000 ether);
+        process_single_bet(words, 10 ether, 10000 ether);
 
         // 3 Plum
         words[0] = 2;
         words[1] = 18;
         words[2] = 4;
-        process_single_bet(10 ether, words, 10 ether, 2000 ether);
+        process_single_bet(words, 10 ether, 2000 ether);
 
         // 3 Watermelon
         words[0] = 5;
         words[1] = 4;
         words[2] = 1;
-        process_single_bet(10 ether, words, 10 ether, 1000 ether);
+        process_single_bet(words, 10 ether, 1000 ether);
 
         // 3 Orange
         words[0] = 0;
         words[1] = 2;
         words[2] = 6;
-        process_single_bet(10 ether, words, 10 ether, 500 ether);
+        process_single_bet(words, 10 ether, 500 ether);
 
         // 3 Lemon
         words[0] = 14;
         words[1] = 0;
         words[2] = 14;
-        process_single_bet(10 ether, words, 10 ether, 250 ether);
+        process_single_bet(words, 10 ether, 250 ether);
 
         // 2 Cherry
         words[0] = 6;
         words[1] = 5;
         words[2] = 0;
-        process_single_bet(10 ether, words, 10 ether, 100 ether);
+        process_single_bet(words, 10 ether, 100 ether);
 
         // 2 Cherry
         words[0] = 6;
         words[1] = 0;
         words[2] = 20;
-        process_single_bet(10 ether, words, 10 ether, 100 ether);
+        process_single_bet(words, 10 ether, 100 ether);
 
         // 2 Cherry
         words[0] = 0;
         words[1] = 5;
         words[2] = 20;
-        process_single_bet(10 ether, words, 10 ether, 100 ether);
+        process_single_bet(words, 10 ether, 100 ether);
 
         // 1 Cherry
         words[0] = 6;
         words[1] = 0;
         words[2] = 0;
-        process_single_bet(10 ether, words, 10 ether, 20 ether);
+        process_single_bet(words, 10 ether, 20 ether);
 
         // 1 Cherry
         words[0] = 0;
         words[1] = 5;
         words[2] = 0;
-        process_single_bet(10 ether, words, 10 ether, 20 ether);
+        process_single_bet(words, 10 ether, 20 ether);
 
         // 1 Cherry
         words[0] = 0;
         words[1] = 0;
         words[2] = 20;
-        process_single_bet(10 ether, words, 10 ether, 20 ether);
+        process_single_bet(words, 10 ether, 20 ether);
     }
 
     /*
-     * process Single bet win
+     * Process Single bet win
      */
-    function process_single_bet(uint256 deposit, uint256[3] memory words, uint256 wager, uint256 payout) private {
-        SLOTTEST.deposit(deposit);
+    function process_single_bet(uint256[3] memory words, uint256 wager, uint256 payout) private {
+        SLOTTEST.deposit(10 ether);
 
-        uint256[] memory bets = new uint256[](1);
-        bets[0] = wager;
+        SLOT.BET[] memory bets = new SLOT.BET[](1);
+        bets[0].wager = wager;
 
         uint256 request = SLOTTEST.play(bets);
 
@@ -209,17 +208,18 @@ contract testSuite {
         check_deposit(0, 0);
     }
 
-    /* 
+    /*
      * Test multiple bet win
      */
     function test_multiple() public {
-        SLOTTEST.deposit(120 ether);
+        XZ.client_zero(address(SLOTTEST));
 
-        uint256[] memory bets = new uint256[](12);
+        SLOT.BET[] memory bets = new SLOT.BET[](12);
         for (uint256 i = 0; i < bets.length; i++) {
-            bets[i] = 10 ether;
+            bets[i].wager = 10 ether;
         }
 
+        SLOTTEST.deposit(120 ether);
         uint256 request = SLOTTEST.play(bets);
 
         uint256[] memory words = new uint256[](36);
